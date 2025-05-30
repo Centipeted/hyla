@@ -1,6 +1,7 @@
 package hu.bme.aut
 
 import hu.bme.aut.domain.model.Job
+import hu.bme.aut.domain.model.LoginRequest
 import hu.bme.aut.domain.model.Request
 import hu.bme.aut.domain.model.Response
 import hu.bme.aut.serialization.InstantAsStringSerializer
@@ -44,12 +45,37 @@ class Server(private val apiKeys: Set<String>, private val tokens: Map<String, S
         ) }
 
         routing {
-            post("/enqueue") {
-                println("eq")
+            post("/login.json") {
+                println("login.json")
+                val request = call.receive<LoginRequest>()
+
+                if (request.apiKey !in apiKeys) {
+                    call.respond(HttpStatusCode.Unauthorized)
+                    return@post
+                }
+
+                if (request.loginKey != null) {
+                    //check if login key is valid
+                }
+                else if (request.mobile != null && request.pin != null) {
+                    //check if pin is valid
+                }
+                else {
+                    call.respond(HttpStatusCode.Unauthorized)
+                }
+
+
+
             }
 
-            get("/dequeue") {
-                println("dq")
+            post("/logout.json") {
+                println("logout.json")
+            }
+
+            get("/get") {
+                println("get")
+                val param = call.parameters["id"]
+                call.respondText("Hello ${param}World! ", ContentType.Text.Plain)
             }
         }
     }
