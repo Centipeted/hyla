@@ -3,8 +3,7 @@ package hu.bme.aut
 fun main() {
 
     val server = Server(
-        setOf(""),
-        mapOf("" to "")
+        apiKeys = setOf("demo-api-key"),
     )
 
     server.start()
